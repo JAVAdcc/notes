@@ -1,36 +1,36 @@
 ## self attention
 
 **动机**：考虑一个问题，n个输入，n个输出，我们需要得到这个函数，似乎就是一个Linear可以解决的问题，但是如果问题背景具体到如下：
-![alt text](.\pictures\s_a_p1.png)
+![alt text](./pictures/s_a_p1.png)
 此时我们想要判别单词的词性，那我们发现Linear不可能区分出第二个saw和第三个saw的差异，因为同样的输入一定会导致同样的输出。
 那么我们考虑一种解决方式：用HW2中输入一个window的方式将单一的输入关联到上下文，但是这样效率还是很差，也不能保证这个范围能覆盖到和saw有关的所有单词
 最终的解决方案就是self attention：
-![alt text](.\pictures\s_a_p2.png)
-![alt text](.\pictures\s_a_p3.jpg)
+![alt text](./pictures/s_a_p2.png)
+![alt text](./pictures/s_a_p3.jpg)
 $q^1 = W^q a^1, k^i = W^k a^i, v^i = W^v a^i$
-$\alpha _{1,j} = q^1 \cdot k^j$
-$\alpha ^{'} _{1-4} = softmax(\alpha _{1-4})$
-$b^i = \Sigma_j \alpha ^{'} _{i,j} v^j$
+$/alpha _{1,j} = q^1 /cdot k^j$
+$/alpha ^{'} _{1-4} = softmax(/alpha _{1-4})$
+$b^i = /Sigma_j /alpha ^{'} _{i,j} v^j$
 用线性代数的语言描述就更加简洁
 $I = (a^1, a^2, a^3, a^4), O = (b^1, b^2, b^3, b^4)$
 $K = (k^1, k^2, k^3, k^4), Q = (q^1, q^2, q^3, q^4), V = (v^1, v^2, v^3, v^4)$
-$\left( \begin{matrix}
-    K \\
-    Q \\
+$/left( /begin{matrix}
+    K //
+    Q //
     V
-\end{matrix}\right ) = 
-\left( \begin{matrix} 
-    W^k \\
-    W^q \\
-    W^v \\
-\end{matrix} \right) I$
+/end{matrix}/right ) = 
+/left( /begin{matrix} 
+    W^k //
+    W^q //
+    W^v //
+/end{matrix} /right) I$
 A的定义看图，注意下标和正常矩阵反的
 就有$A = K^T Q, A^{'} = softmax(A), O = V A^{'}$
-![alt text](.\pictures\s_a_p4.png)
+![alt text](./pictures/s_a_p4.png)
 
 ## Multi-head Self-attention
 
-![alt text](.\pictures\s_a_p5.png)
+![alt text](./pictures/s_a_p5.png)
 
 ```python
 Args:
@@ -46,8 +46,8 @@ Args:
 ## Positional Encoding ??
 
 每个输入在sequence中的位置信息缺失，给ai添加一项ei
-![alt text](.\pictures\s_a_p6.png)
+![alt text](./pictures/s_a_p6.png)
 
 ## 图像处理&self-attention
 
-![alt text](.\pictures\s_a_p7.png)
+![alt text](./pictures/s_a_p7.png)

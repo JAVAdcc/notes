@@ -26,7 +26,7 @@
 
 ---
 
-全过程就是![alt text](..\notes\pictures\CNN_1.png)
+全过程就是![alt text](../notes/pictures/CNN_1.png)
 
 ---
 

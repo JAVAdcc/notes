@@ -41,7 +41,7 @@ Lecture15 Meta learing
 
 ### 模型优化的思路
 
-![alt text](pictures\image.png)
+![alt text](pictures/image.png)
 测试集出问题时需要检查训练集，如果误差较大问题就出在模型（增大弹性）或者优化器上。
 
 如果训练集误差小，但是检测效果还是不好，可能是overfitting的问题（极端的情况下就是一个完全没用，只会拟合trainingdata的函数）
@@ -49,4 +49,4 @@ Lecture15 Meta learing
 >最简单的解决方法：增加training data
 >data augmentation：位移，左右翻转，旋转，裁剪
 >限制model的弹性：constrain or flexible？
->![alt text](pictures\image1.png)
+>![alt text](pictures/image1.png)
