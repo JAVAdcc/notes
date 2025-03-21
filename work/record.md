@@ -79,10 +79,9 @@
 
 ![alt text](<./image/p3.png>)
 
-1、网格场是什么，之前看VAE的encoder输出的好像是z = mu + sigma * epsilon这种，就不是很明白怎么会输出一个‘网格场’
+1、之前看VAE的encoder输出的好像是z = mu + sigma * epsilon这种，就不是很明白怎么能输出一个W * H * D网格场，还是说是类似vqVAE的encoder，直接用几个卷积层把图像转成网格场就好了
 
-2、decoder的要求感觉和shapelayer代码里的MLP差不多？（把feature转成rgb）（所以为什么不直接用mlp做呢）  
-然后看infd那个论文的框架图就不太懂要参照哪部分(是后面$\phi$->CLIF->output的部分吗)
+2、decoder的要求感觉和shapelayer代码里的MLP差不多？然后看infd那个论文的框架图就不太懂要参照哪部分(是后面$\phi$->CLIF->output的部分吗)
 ![alt text](<./image/p4.png>)
 
-3、回过来有点想不通shapelayer做的事情的意义，重建，编辑，但是没办法生成是吗？那shapelayer和这次的任务的关联是什么呢，就是提供了三角化之后的图片吗
+3、回过来有点想不通shapelayer做的事情的意义，重建，编辑，但是没办法生成是吗？那shapelayer和这次的任务的关联是什么呢，就是提供了对图片的一些预处理吗
