@@ -1,45 +1,61 @@
 
-## Ä£ĞÍ×°Åä¹ı³Ì
+## æ¨¡å‹è£…é…è¿‡ç¨‹
 
-ÏÈĞ´Ò»ÏÂdatasetµÄ½¨Á¢Á÷³Ì
+å…ˆå†™ä¸€ä¸‹datasetçš„å»ºç«‹æµç¨‹
 
-Ê¹ÓÃÑµÁ·vaeµÄÃüÁî
+ä½¿ç”¨è®­ç»ƒvaeçš„å‘½ä»¤
 
 ```
 CUDA_VISIBLE_DEVICES=0,1 torchrun --standalone --nproc-per-node=2 run.py --cfg cfgs/ae_custom.yaml
 ```
 
-ÕûÌå¶øÑÔ£¬datasetÊÇÓÃwrapper_cae°ü×°µÄimage_folder
-¾ßÌå´úÂëÁ÷³Ì£º
+æ•´ä½“è€Œè¨€ï¼Œdatasetæ˜¯ç”¨wrapper_caeåŒ…è£…çš„image_folder
+å…·ä½“ä»£ç æµç¨‹ï¼š
 
 ``` python
 -> run.py
 trainer.run()
 -> infd_trainer.py
-infd_trainer.run() # Êµ¼Êµ÷ÓÃµÄÊÇbase_trainer.run()
+infd_trainer.run() # å®é™…è°ƒç”¨çš„æ˜¯base_trainer.run()
 -> base_trainer.py
 base_trainer.make_datasets()
 for split, spec in cfg.datasets.items():
     # split:{"train", "train_hrft", "val"}
     # spec:{"name", "args":{} , "loader":{}}
-    # ÆäÖĞspec['name']Îªwrapper_cae
+    # å…¶ä¸­spec['name']ä¸ºwrapper_cae
     dataset = datasets.make(spec)
-    # ÕâÒ»²½Ïàµ±ÓÚ
+    # è¿™ä¸€æ­¥ç›¸å½“äº
     # dataset = wraaper_cae(*args)
 -> wrapper_cae.py
-BaseWrapperCAE.__init__(*args Ò²¾ÍÊÇyamlµÄargsÏÂµÄÒ»¶Ñ²ÎÊı)
+BaseWrapperCAE.__init__(*args ä¹Ÿå°±æ˜¯yamlçš„argsä¸‹çš„ä¸€å †å‚æ•°)
 self.dataset = datasets.make(dataset)
-# ´Ë´¦datasetÎªargs.dataset = {"name" = "image_folder", "args" = {"root_path", "resize}}
-# Ïàµ±ÓÚ
+# æ­¤å¤„datasetä¸ºargs.dataset = {"name" = "image_folder", "args" = {"root_path", "resize}}
+# ç›¸å½“äº
 # self.dataset = image_folder(root_path, resize)
 ->image_folder.py
 ImageFolder.__init__(self, root_path, square_crop=True, resize=None, rand_crop=None):
-ImageFolder¼Ì³ĞDatasetÀà£¬¾ÍÊÇ±È½ÏÊìÏ¤µÄDatasetÁË£¬Î¬»¤ÁË__len__ºÍ__getitem__·½·¨
-__getitem__»á×öÒ»Ğ©Êı¾İÔöÇ¿µÄ¹¤×÷(resize&crop)
+ImageFolderç»§æ‰¿Datasetç±»ï¼Œå°±æ˜¯æ¯”è¾ƒç†Ÿæ‚‰çš„Datasetäº†ï¼Œç»´æŠ¤äº†__len__å’Œ__getitem__æ–¹æ³•
+__getitem__ä¼šåšä¸€äº›æ•°æ®å¢å¼ºçš„å·¥ä½œ(resize&crop)
+
+è¿”å›é˜¶æ®µ
+æœ€ç»ˆtrainerçš„å±æ€§ä¸­å°†å­˜å‚¨datasetå’Œloader datasetçš„ç±»å‹æ˜¯wrapperCAE
+dataset = datasets.make(spec)
+self.datasets[split] = dataset
+self.loaders[split], self.loader_samplers[split] = self.make_distributed_loader(
+    dataset, loader_spec.batch_size, drop_last, shuffle, loader_spec.num_workers)
+
+åœ¨ä»datasetä¸­å–dataæ—¶ï¼Œå°†åŒæ—¶è°ƒç”¨wrapperCAEå’ŒImageFolderçš„__getitem__æ–¹æ³•
+å…¶ä¸­wrapperCAEçš„getitemè¿”å›çš„ä¸å•æ˜¯å›¾ç‰‡
+data = {
+    'inp': inp
+    'gt': gt_patch, # 3 p p
+    'gt_coord': coord, # p p 2
+    'gt_cell': cell, # p p 2
+}
 ```
 
-È»ºóÊÇmodelµÄ½¨Á¢¹ı³Ì ºÍdatasetÊÇ·Ç³£ÀàËÆÁË
-infdÌ×{encoder£¬decoder£¬renderer} ¾ßÌåÄÚ²¿½á¹¹µÃÂıÂı¿´
-ÁíÍâÊÇÈç¹ûsaveµÄÄ£ĞÍÂ·¾¶ÀïÓĞlastmodelÊÇ»á¼ÓÔØÖ®ºó¼ÌĞøÑµÁ·µÄ Õâ¸ö²ÎÊı¼ÓÔØ¹ı³ÌÔÚmodels.makeÖĞÍê³É
+ç„¶åæ˜¯modelçš„å»ºç«‹è¿‡ç¨‹ å’Œdatasetæ˜¯éå¸¸ç±»ä¼¼äº†
+infdå¥—{encoderï¼Œdecoderï¼Œrenderer} å…·ä½“å†…éƒ¨ç»“æ„å¾—æ…¢æ…¢çœ‹
+å¦å¤–æ˜¯å¦‚æœsaveçš„æ¨¡å‹è·¯å¾„é‡Œæœ‰lastmodelæ˜¯ä¼šåŠ è½½ä¹‹åç»§ç»­è®­ç»ƒçš„ è¿™ä¸ªå‚æ•°åŠ è½½è¿‡ç¨‹åœ¨models.makeä¸­å®Œæˆ
 
-## ÑµÁ·Á÷³Ì
+## è®­ç»ƒæµç¨‹
