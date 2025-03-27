@@ -33,4 +33,21 @@ self.dataset = datasets.make(dataset)
 ImageFolder.__init__(self, root_path, square_crop=True, resize=None, rand_crop=None):
 ImageFolder继承Dataset类，就是比较熟悉的Dataset了，维护了__len__和__getitem__方法
 __getitem__会做一些数据增强的工作(resize&crop)
+
+返回阶段
+最终trainer的属性中将存储dataset和loader dataset的类型是wrapperCAE
+dataset = datasets.make(spec)
+self.datasets[split] = dataset
+self.loaders[split], self.loader_samplers[split] = self.make_distributed_loader(
+    dataset, loader_spec.batch_size, drop_last, shuffle, loader_spec.num_workers)
+
+在从dataset中取data时，将同时调用wrapperCAE和ImageFolder的__getitem__方法
+其中wrapperCAE的getitem返回的不单是图片
+data = {
+    'inp': inp
+    'gt': gt_patch, # 3 p p
+    'gt_coord': coord, # p p 2
+    'gt_cell': cell, # p p 2
+}
+
 ```
