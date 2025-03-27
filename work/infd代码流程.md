@@ -1,36 +1,36 @@
-ÏÈĞ´Ò»ÏÂdatasetµÄ½¨Á¢Á÷³Ì
+å…ˆå†™ä¸€ä¸‹datasetçš„å»ºç«‹æµç¨‹
 
-Ê¹ÓÃÑµÁ·vaeµÄÃüÁî
+ä½¿ç”¨è®­ç»ƒvaeçš„å‘½ä»¤
 
 ```
 CUDA_VISIBLE_DEVICES=0,1 torchrun --standalone --nproc-per-node=2 run.py --cfg cfgs/ae_custom.yaml
 ```
 
-ÕûÌå¶øÑÔ£¬datasetÊÇÓÃwrapper_cae°ü×°µÄimage_folder
-¾ßÌå´úÂëÁ÷³Ì£º
+æ•´ä½“è€Œè¨€ï¼Œdatasetæ˜¯ç”¨wrapper_caeåŒ…è£…çš„image_folder
+å…·ä½“ä»£ç æµç¨‹ï¼š
 
 ``` python
 -> run.py
 trainer.run()
 -> infd_trainer.py
-infd_trainer.run() # Êµ¼Êµ÷ÓÃµÄÊÇbase_trainer.run()
+infd_trainer.run() # å®é™…è°ƒç”¨çš„æ˜¯base_trainer.run()
 -> base_trainer.py
 base_trainer.make_datasets()
 for split, spec in cfg.datasets.items():
     # split:{"train", "train_hrft", "val"}
     # spec:{"name", "args":{} , "loader":{}}
-    # ÆäÖĞspec['name']Îªwrapper_cae
+    # å…¶ä¸­spec['name']ä¸ºwrapper_cae
     dataset = datasets.make(spec)
-    # ÕâÒ»²½Ïàµ±ÓÚ
+    # è¿™ä¸€æ­¥ç›¸å½“äº
     # dataset = wraaper_cae(*args)
 -> wrapper_cae.py
-BaseWrapperCAE.__init__(*args Ò²¾ÍÊÇyamlµÄargsÏÂµÄÒ»¶Ñ²ÎÊı)
+BaseWrapperCAE.__init__(*args ä¹Ÿå°±æ˜¯yamlçš„argsä¸‹çš„ä¸€å †å‚æ•°)
 self.dataset = datasets.make(dataset)
-# ´Ë´¦datasetÎªargs.dataset = {"name" = "image_folder", "args" = {"root_path", "resize}}
-# Ïàµ±ÓÚ
+# æ­¤å¤„datasetä¸ºargs.dataset = {"name" = "image_folder", "args" = {"root_path", "resize}}
+# ç›¸å½“äº
 # self.dataset = image_folder(root_path, resize)
 ->image_folder.py
 ImageFolder.__init__(self, root_path, square_crop=True, resize=None, rand_crop=None):
-ImageFolder¼Ì³ĞDatasetÀà£¬¾ÍÊÇ±È½ÏÊìÏ¤µÄDatasetÁË£¬Î¬»¤ÁË__len__ºÍ__getitem__·½·¨
-__getitem__»á×öÒ»Ğ©Êı¾İÔöÇ¿µÄ¹¤×÷(resize&crop)
+ImageFolderç»§æ‰¿Datasetç±»ï¼Œå°±æ˜¯æ¯”è¾ƒç†Ÿæ‚‰çš„Datasetäº†ï¼Œç»´æŠ¤äº†__len__å’Œ__getitem__æ–¹æ³•
+__getitem__ä¼šåšä¸€äº›æ•°æ®å¢å¼ºçš„å·¥ä½œ(resize&crop)
 ```
