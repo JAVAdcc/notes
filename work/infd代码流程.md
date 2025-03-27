@@ -1,3 +1,6 @@
+
+## 模型装配过程
+
 先写一下dataset的建立流程
 
 使用训练vae的命令
@@ -34,3 +37,9 @@ ImageFolder.__init__(self, root_path, square_crop=True, resize=None, rand_crop=N
 ImageFolder继承Dataset类，就是比较熟悉的Dataset了，维护了__len__和__getitem__方法
 __getitem__会做一些数据增强的工作(resize&crop)
 ```
+
+然后是model的建立过程 和dataset是非常类似了
+infd套{encoder，decoder，renderer} 具体内部结构得慢慢看
+另外是如果save的模型路径里有lastmodel是会加载之后继续训练的 这个参数加载过程在models.make中完成
+
+## 训练流程
