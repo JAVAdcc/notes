@@ -1,4 +1,4 @@
-先写一下dataset的建立流程
+## AE训练
 
 使用训练vae的命令
 
@@ -6,6 +6,13 @@
 CUDA_VISIBLE_DEVICES=0,1 torchrun --standalone --nproc-per-node=2 run.py --cfg cfgs/ae_custom.yaml
 ```
 
+程序的运行思路主要依赖于两个trainer，通过base_trainer的run方法开启训练过程。
+
+### 初始化过程
+
+主要基于yaml文件的配置内容，向dataset, model的make方法传入args，会有一些分布式训练相关的设置等，这些我没有去细究
+
+**Dataset**
 整体而言，dataset是用wrapper_cae包装的image_folder
 具体代码流程：
 
@@ -51,3 +58,17 @@ data = {
 }
 
 ```
+
+**model**
+关于model的建立好像丢了，不过无伤大雅，单纯的装配过程和dataset是一致的。
+
+autoencoder用的是vqgan的架构，不过decoder生成的是网格场，网格场被renderer渲染成图片。
+vqgan的架构感觉上和vqvae十分类似，仅仅多了一个discriminator在最后，似乎就是加了一个loss约束
+大的框架上就是img->encoder->vector quantizier->decoder->renderer  (with discriminator)
+不过在细节的网络搭建上还是有差异的，比如attention的使用这个还没去看，后面看完程序，需要单独来分析一下infd的架构
+
+### 训练流程
+
+
+
+
