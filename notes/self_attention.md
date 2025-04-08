@@ -8,24 +8,24 @@
 ![alt text](./pictures/s_a_p2.png)
 ![alt text](./pictures/s_a_p3.jpg)
 $q^1 = W^q a^1, k^i = W^k a^i, v^i = W^v a^i$
-$/alpha _{1,j} = q^1 /cdot k^j$
-$/alpha ^{'} _{1-4} = softmax(/alpha _{1-4})$
-$b^i = /Sigma_j /alpha ^{'} _{i,j} v^j$
+$\alpha _{1,j} = q^1 \cdot k^j$
+$\alpha ^{'} _{1-4} = softmax(\alpha _{1-4})$
+$b^i = \Sigma_j \alpha ^{'} _{i,j} v^j$
 用线性代数的语言描述就更加简洁
 $I = (a^1, a^2, a^3, a^4), O = (b^1, b^2, b^3, b^4)$
 $K = (k^1, k^2, k^3, k^4), Q = (q^1, q^2, q^3, q^4), V = (v^1, v^2, v^3, v^4)$
-$/left( /begin{matrix}
-    K //
-    Q //
+$\left( \begin{matrix}
+    K \\
+    Q \\
     V
-/end{matrix}/right ) = 
-/left( /begin{matrix} 
-    W^k //
-    W^q //
-    W^v //
-/end{matrix} /right) I$
+\end{matrix}\right ) = 
+\left( \begin{matrix} 
+    W^k \\
+    W^q \\
+    W^v \\
+\end{matrix} \right) I$
 A的定义看图，注意下标和正常矩阵反的
-就有$A = K^T Q, A^{'} = softmax(A), O = V A^{'}$
+就有$A = K^T Q, A^{'} = softmax(A), O = V A^{'} = V \cdot softmax(K^T Q)$
 ![alt text](./pictures/s_a_p4.png)
 
 ## Multi-head Self-attention
