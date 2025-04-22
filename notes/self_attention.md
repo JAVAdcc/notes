@@ -28,6 +28,8 @@ A的定义看图，注意下标和正常矩阵反的
 就有$A = K^T Q, A^{'} = softmax(A), O = V A^{'} = V \cdot softmax(K^T Q)$
 ![alt text](./pictures/s_a_p4.png)
 
+**需要对这边的A加以说明，A的意义字如其名，就是衡量Q和K之间每个feature之间的相似度，注意前面的计算流程，比如alpha11，实际上是q1和k1（归一化后）的内积，alpha11也就衡量了两者相似程度的大小，越相似，注意力矩阵的激活度就越高**
+
 ## Multi-head Self-attention
 
 ![alt text](./pictures/s_a_p5.png)

@@ -1,3 +1,7 @@
+![alt text](image/p5.png)
+
+![alt text](image/p6.png)
+
 ## 功能部分
 
 代码完成的功能是对一张图片进行重建，也就是ShapeLayer里面的forward_single_image函数。
